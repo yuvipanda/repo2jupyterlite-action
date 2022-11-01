@@ -1,4 +1,4 @@
-name: Build & Publish a JupyterLite Static Site
+name: repo2jupyterlite-action
 branding:
   icon: code
   color: yellow
