@@ -1,4 +1,8 @@
-name: Build & Publish a JupyterLite
+name: Build & Publish a JupyterLite Static Site
+description: |
+  Build & Publish a [JupyterLite](https://jupyterlite.readthedocs.io/en/latest/)
+  static site (with pre-installed packages) to GitHub Pages, via
+  [repo2jupyterlite](https://github.com/yuvipanda/repo2jupyterlite).
 
 inputs:
   destination_path:
@@ -7,19 +11,24 @@ inputs:
     default: ./dist
 
 runs:
+  # We just want to call a bunch of other steps
   using: "composite"
   steps:
     - uses: conda-incubator/setup-miniconda@v2
       with:
         python-version: "3.10"
+        # Use conda-forge only everwhere, we don't need defaults at all
         miniforge-version: latest
+        # Use mambaa, required for Xeus-Python integration
         mamba-version: "*"
         use-mamba: true
     - name: Install repo2jupyterlite
       shell: bash -l {0}
       run: |
+        # FIXME: install this from a published package
         python -m pip install git+https://github.com/yuvipanda/repo2jupyterlite@main
     - name: Build the JupyterLite site
       shell: bash -l {0}
       run: |
+        # Build the jupyterlite!
         repo2jupyterlite . ${{ inputs.destination_path }}
