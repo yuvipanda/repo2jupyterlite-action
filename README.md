@@ -87,3 +87,11 @@ If you commit the `jupyter_lite_config.json` file to your repo, the action will 
 `mamba` to install these packages and make them available to the statically built output site. Note
 that you **must** select the **XPython** kernel, **not** the *Pyodide* kernel to have access to these
 extra packages.
+
+## Limitations
+
+1. The action will fail if you have any directories starting with `.` in your repository
+   [Issue](https://github.com/jupyterlite/jupyterlite/issues/624).
+2. If you push a change to your repo installing a new package, it might take a few minutes sometimes
+   for cache to update on your local machine before you can use that package. Try a different browser,
+   and be patient.
