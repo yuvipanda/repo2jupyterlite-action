@@ -1,8 +1,6 @@
 name: Build & Publish a JupyterLite Static Site
 description: |
-  Build & Publish a [JupyterLite](https://jupyterlite.readthedocs.io/en/latest/)
-  static site (with pre-installed packages) to GitHub Pages, via
-  [repo2jupyterlite](https://github.com/yuvipanda/repo2jupyterlite).
+  Publish a JupyterLite static site (with pre-installed packages) to GitHub pages.
 
 inputs:
   destination_path:
