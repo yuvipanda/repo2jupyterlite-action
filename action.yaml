@@ -1,4 +1,7 @@
 name: Build & Publish a JupyterLite Static Site
+branding:
+  icon: code
+  color: yellow
 description: |
   Publish a JupyterLite static site (with pre-installed packages) to GitHub pages.
 
