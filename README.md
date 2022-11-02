@@ -5,58 +5,59 @@
 1. [Enable publishing to GitHub Pages with GitHub Actions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow)
    for your repository.
 2. Create a `.github/workflows/publish.yaml` file in your GitHub repository with the following
-   contents.
+   contents. If using the GitHub Web UI, you can Select 'Add file' -> 'Create new file' from the
+   UI when viewing the root directory of your repository, and type in `.github/workflows/publish.yaml`
+   into the file name. This will create the appropriate subdirectories if needed too.
 
 
-```yaml
-name: Build and Publish jupyterlite page to GitHub Pages
+    ```yaml
+    name: Build and Publish jupyterlite page to GitHub Pages
+    on:
+      push:
+        branches:
+        - main  # specify 'master' if that is your main branch
+      pull_request:
+        branches:
+        - '*'
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - '*'
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Build repo2jupyterlite
+          uses: yuvipanda/repo2jupyterlite-action@main
+        - name: Upload generated site
+          uses: actions/upload-pages-artifact@v1
+          with:
+            path: ./dist
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build repo2jupyterlite
-        uses: yuvipanda/repo2jupyterlite-action@main
-      - name: Upload generated site
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./dist
+      publish:
+        needs: build
+        if: github.ref == 'refs/heads/main'
+        permissions:
+          pages: write
+          id-token: write
 
-  publish:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      pages: write
-      id-token: write
+        environment:
+          name: github-pages
+          url: ${{ steps.publish.outputs.page_url }}
 
-    environment:
-      name: github-pages
-      url: ${{ steps.publish.outputs.page_url }}
+        runs-on: ubuntu-latest
+        steps:
+        - name: Publish to GitHub Pages
+          id: publish
+          uses: actions/deploy-pages@v1
 
-    runs-on: ubuntu-latest
-    steps:
-      - name: Publish to GitHub Pages
-        id: publish
-        uses: actions/deploy-pages@v1
-```
+    ```
 
 3. After you commit this workflow, go to the *Actions* tab in your repo and watch to see
    if the build and publish succeeded. If it did succeed, the URL to your published
    JupyterLite instance would be shown next to the `Publish` step. Usually this is of
-   the form `https://<your-github-username>.github.io/<repo-name>`.
+   the form `https://<your-github-username>.github.io/<repo-name>`. This URL can also
+   be found if you select "Settings" from your repository page, and then select "Pages"
+   from the left sidebar.
 
 
 ## Install additional packages
@@ -91,7 +92,7 @@ extra packages.
 ## Limitations
 
 1. The action will fail if you have any directories starting with `.` in your repository
-   [Issue](https://github.com/jupyterlite/jupyterlite/issues/624).
+[Issue](https://github.com/jupyterlite/jupyterlite/issues/624).
 2. If you push a change to your repo installing a new package, it might take a few minutes sometimes
    for cache to update on your local machine before you can use that package. Try a different browser,
    and be patient.
