@@ -6,6 +6,10 @@ description: |
   Publish a JupyterLite static site (with pre-installed packages) to GitHub pages.
 
 inputs:
+  contents_path:
+    description: Local path containing contents to be built into the JupyterLite
+    required: true
+    default: .
   destination_path:
     description: Local path where static JupyterLite files will be published
     required: true
@@ -62,4 +66,4 @@ runs:
       shell: bash -l {0}
       run: |
         # Build the jupyterlite!
-        repo2jupyterlite . ${{ inputs.destination_path }}
+        repo2jupyterlite ${{ inputs.contents_path }} ${{ inputs.destination_path }}

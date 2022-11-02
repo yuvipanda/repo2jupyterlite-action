@@ -96,3 +96,18 @@ extra packages.
 2. If you push a change to your repo installing a new package, it might take a few minutes sometimes
    for cache to update on your local machine before you can use that package. Try a different browser,
    and be patient.
+
+## Optional Inputs
+
+The action works by default without any parameters, but you can customize the action
+with some optional parameters.
+
+1. `contents_path`: The path containing the contents to be bundled into the JupyterLite.
+   Defaults to `.`, which is the current directory.
+2. `destination_path`: The path where the generated static files are placed. This is
+   what should be uploaded to GitHub Pages. Defaults to `./dist`.
+3. `repo2jupyterlite_version`: Version of repo2jupyterlite to use.
+
+   `stable` installs latest version from PyPI, `latest` installs latest version
+   from the repo2jupyterlite git repository, any other string installs that specific
+   version from PyPI
