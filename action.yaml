@@ -10,6 +10,15 @@ inputs:
     description: Local path where static JupyterLite files will be published
     required: true
     default: ./dist
+  repo2jupyterlite_version:
+    description: |
+      Version of repo2jupyterlite to use.
+
+      'stable' installs latest version from PyPI, 'latest' installs latest version
+      from the repo2jupyterlite git repository, any other string installs that specific
+      version from PyPI
+    default: stable
+    required: true
 
 runs:
   # We just want to call a bunch of other steps
@@ -24,11 +33,29 @@ runs:
         mamba-version: "*"
         use-mamba: true
     - name: Install repo2jupyterlite
-      shell: bash -l {0}
+      # Needed to use the installed mamba
+      # We also write this in python, as I'm not smart enough to do conditionals
+      # in bash
+      shell: bash -l -c "python -c '{0}'"
       run: |
-        # FIXME: install this from a published package
-        python -m pip install git+https://github.com/yuvipanda/repo2jupyterlite@main
+        import sys
+
+        version = '${{ inputs.repo2jupyterlite_version }}'
+        if version == 'stable':
+          package = 'repo2jupyterlite'
+        elif version == 'latest':
+          package = 'git+https://github.com/yuvipanda/repo2jupyterlite@main'
+        else:
+          package = f'repo2jupyterlite@{version}'
+
+        import subprocess
+        subprocess.check_call([
+          sys.executable,
+          '-m',
+          'pip', 'install', package
+        ])
     - name: Build the JupyterLite site
+      # Needed to use the installed mamba
       shell: bash -l {0}
       run: |
         # Build the jupyterlite!
