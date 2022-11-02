@@ -48,6 +48,7 @@ runs:
         else:
           package = f'repo2jupyterlite@{version}'
 
+        print(f"Installing {package}")
         import subprocess
         subprocess.check_call([
           sys.executable,
