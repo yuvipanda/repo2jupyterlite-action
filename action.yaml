@@ -35,8 +35,10 @@ runs:
     - name: Install repo2jupyterlite
       # Needed to use the installed mamba
       # We also write this in python, as I'm not smart enough to do conditionals
-      # in bash
-      shell: bash -l -c "python {0}"
+      # in bash. The `-u` to python makes output unbuffered so print statements
+      # come out corectly. {0} is replaced with path to file containing the contents
+      # of `run`
+      shell: bash -l -c "python -u {0}"
       run: |
         import sys
 
