@@ -1,5 +1,10 @@
 # repo2jupyterlite GitHub Action
 
+Publish a repository full of interactive Jupyter Notebooks to GitHub pages
+statically with [JupyterLite](https://jupyterlite.readthedocs.io/en/latest/),
+allowing visitors to explore your notebooks (and execute them) *entirely in
+the browser*, without any backend necessary!
+
 ## Setting up publishing with GitHub Actions
 
 1. [Enable publishing to GitHub Pages with GitHub Actions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow)
