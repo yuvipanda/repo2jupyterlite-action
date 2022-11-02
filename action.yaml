@@ -36,7 +36,7 @@ runs:
       # Needed to use the installed mamba
       # We also write this in python, as I'm not smart enough to do conditionals
       # in bash
-      shell: bash -l -c "python -c '{0}'"
+      shell: bash -l -c "python {0}"
       run: |
         import sys
 
