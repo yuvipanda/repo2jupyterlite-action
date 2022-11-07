@@ -40,7 +40,7 @@ the browser*, without any backend necessary!
 
       publish:
         needs: build
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' # specify 'refs/heads/master' if that is your main branch
         permissions:
           pages: write
           id-token: write
